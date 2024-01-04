@@ -1,5 +1,3 @@
-import { ClerkProvider } from "@clerk/nextjs";
-
 
 const PlatformLayout = ({
     children
