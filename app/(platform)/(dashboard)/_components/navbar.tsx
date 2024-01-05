@@ -12,10 +12,10 @@ const DashboardNavbar = () => {
         <div className='hidden md:flex'>
           <Logo />
         </div>
-        <Button size={"sm"} className='rounded-sm hidden md:block h-auto py-1.5 px-2'>
+        <Button variant={"primary"} size={"sm"} className='rounded-sm hidden md:block h-auto py-1.5 px-2'>
           Create
         </Button>
-        <Button size={"sm"} className='rounded-sm block md:hidden'>
+        <Button variant={"primary"} size={"sm"} className='rounded-sm block md:hidden'>
           <PlusIcon className='h-4 w-4' />
         </Button>
       </div>
@@ -24,7 +24,7 @@ const DashboardNavbar = () => {
           hidePersonal
           afterCreateOrganizationUrl="/organization/:id"
           afterLeaveOrganizationUrl="/select-org"
-          afterSelectPersonalUrl="/organization/:id"
+          afterSelectOrganizationUrl="/organization/:id"
           appearance={{
             elements: {
               rootBox: {
@@ -35,16 +35,16 @@ const DashboardNavbar = () => {
             }
           }}
         />
-        <UserButton 
-        afterSignOutUrl='/'
-        appearance={{
-          elements: {
-            avatarBox: {
-              height: 30,
-              width: 30
+        <UserButton
+          afterSignOutUrl='/'
+          appearance={{
+            elements: {
+              avatarBox: {
+                height: 30,
+                width: 30
+              }
             }
-          }
-        }}
+          }}
         />
       </div>
     </nav>
