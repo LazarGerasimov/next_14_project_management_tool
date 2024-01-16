@@ -10,6 +10,9 @@ const OrganizationIdPage = async () => {
       <div className="px-2 md:px-4">
         <BoardList />
       </div>
+      <div>
+        
+      </div>
     </div>
   );
 };
