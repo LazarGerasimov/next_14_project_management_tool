@@ -1,12 +1,13 @@
 "use client";
 import { unsplash } from "@/lib/unsplash";
 import { cn } from "@/lib/utils";
-import { Loader2 } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import { defaultImages } from "@/constants/images";
 import Link from "next/link";
+import { FormErrors } from "./form-errors";
 
 interface FormPickerProps {
 	id: string;
@@ -71,7 +72,21 @@ export const FormPicker = ({
 							"cursor-pointer relative aspect-video group hover:opacity-75 transition bg-muted",
 							pending && "opacity-50 hover:opacity-50 cursor-pointer"
 						)}>
+						<input
+							type="radio"
+							id={id}
+							name={id}
+							className="hidden"
+							checked={selectedImageId === image.id}
+							disabled={pending}
+							value={`${image.id}|${image.urls.thumb}|${image.urls.full}|${image.links.html}|${image.user.name}`}
+						/>
 						<Image src={image.urls.thumb} fill alt="unsplash_img" className="object-cover rounded-sm" />
+						{selectedImageId === image.id && (
+							<div className="absolute inset-y-0 h-full w-full bg-black/30 flex items-center justify-center">
+								<Check className="h-4 w-4 text-white" />
+							</div>
+						)}
 						<Link
 							href={image.links.html}
 							target="_blank"
@@ -82,6 +97,7 @@ export const FormPicker = ({
 					</div>
 				))}
 			</div>
+			<FormErrors id="image" errors={errors} />
 		</div>
 	)
 }
