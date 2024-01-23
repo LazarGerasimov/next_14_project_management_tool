@@ -30,13 +30,22 @@ const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
     setIsEditing(false);
   };
 
+  const onSubmit = (formData: FormData) => {
+    const title = formData.get("title") as string;
+    console.log("I am submitted", title);
+  };
+
+  const onBlur = () => {
+    formRef.current?.requestSubmit();
+  }
+
   if (isEditing) {
     return (
-      <form ref={formRef} className="flex items-center gap-x-2">
+      <form action={onSubmit} ref={formRef} className="flex items-center gap-x-2">
         <FormInput
           ref={inputRef}
           id="title"
-          onBlur={() => { }}
+          onBlur={onBlur}
           defaultValue={data.title}
           className="text-lg font-bold px-[7px] py-1 h-7 bg-transparent focus-visible:outline-none focus-visible:ring-transparent border-none"
         />
