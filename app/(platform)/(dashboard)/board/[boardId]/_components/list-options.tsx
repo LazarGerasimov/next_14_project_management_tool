@@ -28,7 +28,7 @@ const ListOptions = ({
 
   const { execute: executeDelete } = useAction(deleteList, {
     onSuccess: (data) => {
-      toast.success("List deleted successfully.");
+      toast.success(`List "${data.title}" deleted successfully.`);
     },
     onError: (error) => {
       toast.error(error)
