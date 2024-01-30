@@ -68,8 +68,8 @@ const ListContainer = ({
 			let newOrderedData = [...orderedData];
 
 			// Source and destination list
-			const sourceList = newOrderedData.find(list => list.id === source.draggableId);
-			const destinationList = newOrderedData.find(list => list.id === destination.draggableId);
+			const sourceList = newOrderedData.find(list => list.id === source.droppableId);
+			const destinationList = newOrderedData.find(list => list.id === destination.droppableId);
 
 			if (!sourceList || !destinationList) {
 				return;
@@ -86,7 +86,7 @@ const ListContainer = ({
 			};
 
 			// Moving the card in the same list 
-			if (source.draggableId === destination.draggableId) {
+			if (source.droppableId === destination.droppableId) {
 				const reorderedCards = reorder(
 					sourceList.cards,
 					source.index,
@@ -98,9 +98,11 @@ const ListContainer = ({
 				});
 
 				sourceList.cards = reorderedCards;
-
 				setOrderedData(newOrderedData);
 				// TODO: Trigger server action 
+				// User moves the card to another list
+			} else {
+
 			}
 		}
 
