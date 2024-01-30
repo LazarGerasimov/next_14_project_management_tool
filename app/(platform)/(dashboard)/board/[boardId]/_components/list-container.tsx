@@ -102,7 +102,26 @@ const ListContainer = ({
 				// TODO: Trigger server action 
 				// User moves the card to another list
 			} else {
+				// Remove card from the source list
+				const [movedCard] = sourceList.cards.splice(source.index, 1);
 
+				// Asign the new listId to the moved card
+				movedCard.listId = destination.droppableId;
+
+				// Add card to the destination list
+				destinationList.cards.splice(destination.index, 0, movedCard);
+
+				sourceList.cards.forEach((card, index) => {
+					card.order = index;
+				});
+
+				// Update the order for each card in the destination list
+				destinationList.cards.forEach((card, index) => {
+					card.order = index;
+				});
+
+				setOrderedData(newOrderedData);
+				// TODO: Trigger server action
 			}
 		}
 
