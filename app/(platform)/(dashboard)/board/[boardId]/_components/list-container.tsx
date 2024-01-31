@@ -149,7 +149,10 @@ const ListContainer = ({
 				});
 
 				setOrderedData(newOrderedData);
-				// TODO: Trigger server action
+				executeUpdateCardOrder({
+					boardId: boardId,
+					items: destinationList.cards
+				});
 			}
 		}
 
