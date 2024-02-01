@@ -1,4 +1,5 @@
 import { ModalProvider } from '@/components/providers/modal-provider';
+import { QueryProvider } from '@/components/providers/query-provider';
 import { Toaster } from 'sonner';
 
 const PlatformLayout = ({
@@ -8,10 +9,11 @@ const PlatformLayout = ({
 }) => {
     return (
         <>
-            <Toaster />
-            <ModalProvider />
+            <QueryProvider>
+                <Toaster />
+                <ModalProvider />
                 {children}
-            
+            </QueryProvider>
         </>
     )
 }
