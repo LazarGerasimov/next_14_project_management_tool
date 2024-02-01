@@ -1,3 +1,4 @@
+import { ModalProvider } from '@/components/providers/modal-provider';
 import { Toaster } from 'sonner';
 
 const PlatformLayout = ({
@@ -8,7 +9,9 @@ const PlatformLayout = ({
     return (
         <>
             <Toaster />
-            {children}
+            <ModalProvider />
+                {children}
+            
         </>
     )
 }
