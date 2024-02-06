@@ -1,14 +1,17 @@
 "use client";
 
+import { updateCard } from '@/actions/update-card';
 import { FormSubmit } from '@/components/form/form-submit';
 import FormTextArea from '@/components/form/form-textarea';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useAction } from '@/hooks/use-action';
 import { CardWithList } from '@/types';
 import { useQueryClient } from '@tanstack/react-query';
 import { AlignLeft } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import React, { ElementRef, KeyboardEventHandler, useRef, useState } from 'react'
+import { toast } from 'sonner';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 
 interface DescriptionProps {
@@ -46,10 +49,29 @@ const Description = ({
   useEventListener("keydown", onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
+  const { execute, fieldErrors } = useAction(updateCard, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["card", data.id],
+      });
+      toast.success(`Card "${data.title}" updated.`);
+      disableEditing();
+    },
+    onError: (error) => {
+      toast.error(error);
+    }
+  })
+
   const onSubmit = (formData: FormData) => {
     const description = formData.get("description") as string;
     const boardId = params.boardId as string;
-    // Execute
+
+
+    execute({
+      id: data.id,
+      description,
+      boardId
+    })
   }
 
 
@@ -64,13 +86,15 @@ const Description = ({
           <form
             ref={formRef}
             className='space-y-2'
-            action=""
+            action={onSubmit}
           >
             <FormTextArea
               id='description'
               className='w-full mt-2'
               placeholder='Add detailed description'
               defaultValue={data.description || undefined}
+              errors={fieldErrors}
+              ref={textareaRef}
             />
             <div className='flex items-center gap-x-2'>
               <FormSubmit>
