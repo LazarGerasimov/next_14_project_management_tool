@@ -10,67 +10,67 @@ import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
-    const { userId, orgId } = auth();
+  const { userId, orgId } = auth();
 
-    if (!userId || !orgId) {
-        return {
-            error: "Unauthorized"
-        };
+  if (!userId || !orgId) {
+    return {
+      error: "Unauthorized"
+    };
+  }
+
+  const { title, image } = data;
+
+  const [
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHTML,
+    imageUserName
+  ] = image.split("|");
+
+  console.log({
+    imageId,
+    imageThumbUrl,
+    imageFullUrl,
+    imageLinkHTML,
+    imageUserName
+  })
+
+  if (!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHTML || !imageUserName) {
+    return {
+      error: 'Missing fields. Failed to create board'
     }
+  }
 
-    const { title, image } = data;
+  let board;
 
-    const [
+  try {
+    board = await db.board.create({
+      data: {
+        title,
+        orgId,
         imageId,
         imageThumbUrl,
         imageFullUrl,
-        imageLinkHTML,
-        imageUserName
-    ] = image.split("|");
+        imageUserName,
+        imageLinkHTML
+      }
+    });
 
-    console.log({
-        imageId,
-        imageThumbUrl,
-        imageFullUrl,
-        imageLinkHTML,
-        imageUserName
+    await createAuditLog({
+      entityTitle: board.title,
+      entityId: board.id,
+      entityType: ENTITY_TYPE.BOARD,
+      action: ACTION.CREATE
     })
-
-    if (!imageId || !imageThumbUrl || !imageFullUrl || !imageLinkHTML || !imageUserName) {
-        return {
-            error: 'Missing fields. Failed to create board'
-        }
+  } catch (error) {
+    return {
+      error: "Failed to create."
     }
+  }
 
-    let board;
-
-    try {
-        board = await db.board.create({
-            data: {
-                title,
-                orgId,
-                imageId,
-                imageThumbUrl,
-                imageFullUrl,
-                imageUserName,
-                imageLinkHTML
-            }
-        });
-
-        await createAuditLog({
-            entityTitle: board.title,
-            entityId: board.id,
-            entityType: ENTITY_TYPE.BOARD,
-            action: ACTION.CREATE
-        })
-    } catch (error) {
-        return {
-            error: "Failed to create."
-        }
-    }
-
-    revalidatePath(`/board/${board.id}`);
-    return { data: board }
+  revalidatePath(`/board/${board.id}`);
+  return { data: board }
 };
 
 export const createBoard = createSafeAction(CreateBoard, handler);
