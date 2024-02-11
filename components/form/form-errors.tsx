@@ -16,7 +16,6 @@ export const FormErrors = ({
   return (
     <div
       id={`${id}-error`}
-      aria-live="polite"
       className="mt-2 text-xs text-rose-500"
     >
       {errors?.[id]?.map((error: string) => (

@@ -64,7 +64,6 @@ const FormTextArea = forwardRef<HTMLTextAreaElement, FormTextAreaProps>(({
             "resize-none focus-visible:ring-0 focus-visible:ring-offset-0 ring-0 focus:ring-0 outline-none shadow-sm",
             className
           )}
-          aria-aria-describedby={`${id}-error`}
           defaultValue={defaultValue}
         />
       </div>
